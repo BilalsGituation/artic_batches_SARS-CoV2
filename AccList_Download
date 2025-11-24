@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Prerequisite 1: Get the accession list SRR_Acc_List.txt for your selected runs from the SRA Run Selector
+# Prerequisite 2: Get enaBrowserTools package available at https://github.com/enasequence/enaBrowserTools whose python3 directory needs to be exported to your PATH
 
 mkdir -p ENA_Downloads/fastq
 
