@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Prerequisite 1: Get the accession list SRR_Acc_List.txt for your selected runs from the SRA Run Selector
+
+mkdir -p ENA_Downloads/fastq
+
+echo "first pass:"
+for acc in $(cat ~/Downloads/SRR_Acc_List.txt);
+do
+ enaDataGet -f fastq -d ENA_Downloads/fastq/ $acc;
+done
+
+counter=0
+
+echo "second pass:"
+for acc in $(cat ~/Downloads/SRR_Acc_List.txt);
+do
+ enaDataGet -f fastq -d ENA_Downloads/fastq/ $acc;
+ ((counter++))
+done
+
+# Why two passes? FTP request denials can sometimes cause you to miss some downloads out of your batch
+
+echo "Check that you have $counter new fastq files in ENA_Downloads/fastq/"

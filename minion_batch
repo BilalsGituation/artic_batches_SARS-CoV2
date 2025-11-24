@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Set variables, reset if needed
+SCHEME_DIR="./artic-ncov2019/primer_schemes"
+FASTQ_DIR="./guppyplex_out"
+OUTPUT_DIR="./artic_results"
+NORMALISE=100
+THREADS=$(nproc --all)
+MODEL="r1041_e82_400bps_sup_v500"
+SCHEME_NAME="nCoV-2019"
+SCHEME_VERSION="v4.1.0"
+
+# Create output directory
+mkdir -p "$OUTPUT_DIR"
+
+total_files=$(find "$FASTQ_DIR" -name "filtered_*.fastq" | wc -l)
+counter=0
+
+# Process each single-end FASTQ file
+for fastq_file in "$FASTQ_DIR"/filtered_*.fastq
+do
+    ((counter++))
+    accession=$(basename "$fastq_file" .fastq | sed 's/filtered_//')
+    echo "                         "
+    echo "================================="
+    echo "[$counter/$total_files] Processing: $accession"
+    echo "Input file: $fastq_file"
+    echo "================================="
+
+    # Run artic minion with single-end reads
+    artic minion \
+        --normalise $NORMALISE \
+        --threads $THREADS \
+        --read-file "$fastq_file" \
+        --model "$MODEL" \
+        --scheme-directory "$SCHEME_DIR" \
+        --scheme-name "$SCHEME_NAME" \
+        --scheme-version "$SCHEME_VERSION" \
+                             "$accession"
+
+
+    # Move results to output directory
+    mkdir "$OUTPUT_DIR"/"${accession}"/
+    mv "${accession}"*  "$OUTPUT_DIR"/"${accession}"/  2>/dev/null || true
+    echo "Finished: $accession"
+    echo "------------------------"
+done
+
+echo "All $total_files samples processed!"
+echo "Outputs can be found in: $OUTPUT_DIR"

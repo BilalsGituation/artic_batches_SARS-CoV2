@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Prerequisite 1: Get the accession list SRR_Acc_List.txt for your selected runs from the SRA Run Selector
+# Prerequisite 2: Run the script AccList_Download to extract them to the ENA_Downloads/fastq/ dir
+
+# Change to your Downloads directory if needed
+for acc in $(cat ~/Downloads/SRR_Acc_List.txt);
+do
+# change this path to where you downloaded the accessions
+ artic guppyplex --directory ENA_Downloads/fastq/${acc} \
+                 --prefix guppyplex_out/filtered \
+                 --min-length 400 \
+                 --max-length 700 \
+                 --quality 7;
+done

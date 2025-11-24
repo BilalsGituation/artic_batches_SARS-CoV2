@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Executable but recommendation is to input all of this manually
+# Prerequisite: Working mamba installation
+
+pip uninstall tensorflow keras tf-keras tf_keras -y # to prevent your shell getting confused
+mamba create -n artic_env python=3.10 tensorflow=2.* keras=2.* clair3=1.* artic -c bioconda -c conda-forge
+mamba activate artic_env
+artic_get_models
+git clone https://github.com/artic-network/artic-ncov2019.git
