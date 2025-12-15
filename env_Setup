@@ -4,7 +4,8 @@
 # Prerequisite: Working mamba installation
 
 pip uninstall tensorflow keras tf-keras tf_keras -y # to prevent your shell getting confused
-mamba create -n artic_env python=3.10 tensorflow=2.* keras=2.* clair3=1.* artic -c bioconda -c conda-forge
+mamba create -n artic_env python=3.10 tensorflow=2.* keras=2.* clair3=1.* artic quast multiqc snpeff -c bioconda -c conda-forge
 mamba activate artic_env
 artic_get_models
 git clone https://github.com/artic-network/artic-ncov2019.git
+wget http://ftp.ensemblgenomes.org/pub/viruses/gtf/sars_cov_2/Sars_cov_2.ASM985889v3.101.gtf.gz

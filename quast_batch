@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Using minion infiles rather than filtering minion outfiles
+total_files=$(find "./guppyplex_out" -name "filtered_*.fastq" | wc -l)
+counter=0
+
+#Run quast
+# first argument (no letter) is our consensus put out by artic minion
+# -r is our reference genome file from the primer scheme we ran artic minion with
+# -g is our gtf/feature file so that QUAST knows which genome regions code for which proteins (e.g. spike)
+# --single <fastq-filename> is the fastq of reads we assembled (guppyplex output/minion input)
+# -t is the amount of threads the cmd will use. $(nproc --all) is a system variable of your thread count
+# finally, -o is output
+for fasta_file in artic_results/*/*.consensus.fasta
+do
+((counter++))
+# extract accession for use in other arguments/file paths
+ACCESSION=$(basename "$fasta_file" .consensus.fasta)
+quast artic_results/${ACCESSION}/${ACCESSION}.consensus.fasta \
+        -r artic-ncov2019/primer_schemes/nCoV-2019/V4.1/SARS-CoV-2.reference.fasta \
+        -g Sars_cov_2.ASM985889v3.101.gtf.gz \
+        --single guppyplex_out/filtered_${ACCESSION}.fastq \
+        -t $(nproc --all) \
+        -o artic_results/${ACCESSION}/quast_out
+
+echo "[$counter/$total_files] files processed"
+done
+
+# MultiQC if you want to check, will be overwritten by snpeff script
+multiqc artic_results/ 
+
+echo "All $total_files consensus genomes QCd, and multiqc performed!"
