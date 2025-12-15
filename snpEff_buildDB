@@ -9,7 +9,9 @@ DBNAME="MN908947.3"
 #erase filesystem effects of any previous failed attempts
 rm -rfv $CONDA_PREFIX/share/snpeff-*/data/$DBNAME
 
-mkdir -pv $CONDA_PREFIX/share/snpeff-*/data/$DBNAME
+
+SNPEFF_DIR=$(find $CONDA_PREFIX/share -maxdepth 1 -name "snpeff-*" -type d)
+mkdir -pv $SNPEFF_DIR/data/$DBNAME   
 
 # wget gzipped gtf from http://ftp.ensemblgenomes.org/pub/viruses/gtf/sars_cov_2/Sars_cov_2.ASM985889v3.101.gtf.gz
 # UNZIP GTF, keeping .gz version
@@ -18,8 +20,8 @@ gunzip -kvf Sars_cov_2.ASM985889v3.101.gtf.gz
 REFFASTA=artic-ncov2019/primer_schemes/nCoV-2019/V4.1/SARS-CoV-2.reference.fasta
 GTF=Sars_cov_2.ASM985889v3.101.gtf
 
-cp -v $GTF $CONDA_PREFIX/share/snpeff-*/data/$DBNAME/genes.gtf
-cp -v $REFFASTA $CONDA_PREFIX/share/snpeff-*/data/$DBNAME/sequences.fa
+cp -v $GTF $SNPEFF_DIR/data/$DBNAME/genes.gtf
+cp -v $REFFASTA $SNPEFF_DIR/data/$DBNAME/sequences.fa
 
 # MN908947.3 is already in config
 
