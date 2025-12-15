@@ -11,7 +11,7 @@ This set of scripts was written in order to facilitate running the Artic minion 
 
 ## What to expect
 
-- A directory containing: the scripts, directory trees of: raw data, preprocessed data, results and Artic primer scheme versions for SARS-CoV2 and other major viruses
+- A directory containing: the scripts, any required reference files, directory trees of: raw data, preprocessed data, results and Artic primer scheme versions for SARS-CoV2 and other major viruses
 - A new mamba environment suited to run this workflow, including a directory for clair3 models that can be seen by running `ls $CONDA_PREFIX/bin/models`
 
 ## How to run
